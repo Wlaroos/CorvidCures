@@ -3,13 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+
 public class DragAndDrop : MonoBehaviour
 {
+    public delegate void DragEventHandler(Vector2 delta);
+
+    public event DragEventHandler DragEvent;
+
+    private void OnMouseDragEvent(Vector2 delta)
+    {
+        DragEvent?.Invoke(delta);
+    }
+
+    private static bool _isDragging = false;
+    private float lastClickTime = 0f;
+    private float doubleClickTimeThreshold = 0.2f;
+    private bool _waitingForSecondClick = false;
+
     private Vector2 _initialPosition;
     private Vector2 _dragOffset;
 
-    private Rigidbody2D _rigidbody2D;
-    private HingeJoint2D _hingeJoint;
+    private Rigidbody2D _rb;
+    private HingeJoint2D _hj;
+    private SpriteRenderer _sr;
+    private GameObject _child;
 
     private BoxCollider2D _boundsCollider;
 
@@ -19,20 +36,57 @@ public class DragAndDrop : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _hingeJoint = GetComponent<HingeJoint2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _hj = GetComponent<HingeJoint2D>();
+        _sr = GetComponent<SpriteRenderer>();
 
         _boundsCollider = GetComponentInParent<BoxCollider2D>(); // Assumes the bounds are on the parent object
+
+        _child = transform.GetChild(0).gameObject;
+        _child.SetActive(false);
     }
 
     private void OnMouseDown()
     {
-        _initialPosition = transform.position;
-        _dragOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Time.time - lastClickTime < doubleClickTimeThreshold)
+        {
+            // Double click event
+            DoubleClick();
+            CancelInvoke();
+            return;
+        }
+
+        lastClickTime = Time.time;
+
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        if (!_isDragging && hit.collider != null && hit.collider.gameObject == gameObject)
+        {
+            _isDragging = true;
+            _initialPosition = transform.position;
+            _dragOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+    }
+
+    private void SingleClick()
+    {
+        Debug.Log("Single");
+        _waitingForSecondClick = false;
+        // Do single click actions here
+    }
+
+    private void DoubleClick()
+    {
+        Debug.Log("Double");
+        // Do double click actions here
     }
 
     private void OnMouseDrag()
     {
+        if (!_isDragging)
+        {
+            return;
+        }
+
         Vector2 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + (Vector3)_dragOffset;
 
         // Calculate velocity based on the difference in position between the current and previous frames
@@ -43,23 +97,68 @@ public class DragAndDrop : MonoBehaviour
         transform.position = clampedPosition;
 
         // Set the connected anchor of the hinge joint to the current position of the object
-        _hingeJoint.connectedAnchor = transform.position;
+        _hj.connectedAnchor = transform.position;
 
         // Update previous position for next frame's velocity calculation
         _previousPosition = newPosition;
+
+        // Call drag event
+        OnMouseDragEvent(newPosition - _previousPosition);
     }
 
     private void OnMouseUp()
     {
-        _hingeJoint.enabled = true;
+        if (!_isDragging)
+        {
+            return;
+        }
 
-        // Apply final velocity to the object's rigidbody
-        _rigidbody2D.velocity = _velocity * _velocityMult;
+        _isDragging = false;
+        _hj.enabled = true;
+
+        if (!_waitingForSecondClick && Vector2.Distance(transform.position, _initialPosition) < 0.01f)
+        {
+            _waitingForSecondClick = true;
+            Invoke(nameof(SingleClick), doubleClickTimeThreshold);
+        }
+        else
+        {
+            _waitingForSecondClick = false;
+        }
+
+        _rb.velocity = _velocity * _velocityMult;
+    }
+
+    private void OnMouseEnter()
+    {
+        if (!_isDragging)
+        {
+            _child.SetActive(true);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        Invoke(nameof(DelayMouseExit), .05f);
     }
 
     public void Release()
     {
-        _hingeJoint.enabled = false;
+        if (!_isDragging)
+        {
+            return;
+        }
+
+        _isDragging = false;
+        _hj.enabled = false;
         transform.position = _initialPosition;
+    }
+
+    private void DelayMouseExit()
+    {
+        if (!_isDragging)
+        {
+            _child.SetActive(false);
+        }
     }
 }

@@ -52,7 +52,7 @@ public class DragAndDrop : MonoBehaviour
         {
             // Double click event
             DoubleClick();
-            CancelInvoke();
+            CancelInvoke(nameof(SingleClick));
             return;
         }
 
@@ -139,7 +139,14 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseExit()
     {
-        Invoke(nameof(DelayMouseExit), .05f);
+        if (!_isDragging)
+        {
+            _child.SetActive(false);
+        }
+        else
+        {
+            Invoke(nameof(DelayMouseExit), .1f);
+        }
     }
 
     public void Release()

@@ -13,6 +13,10 @@ public class DragAndDrop : MonoBehaviour
 
     private BoxCollider2D _boundsCollider;
 
+    private Vector2 _previousPosition;
+    private Vector2 _velocity;
+    [SerializeField] private float _velocityMult = 0.1f;
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -25,12 +29,14 @@ public class DragAndDrop : MonoBehaviour
     {
         _initialPosition = transform.position;
         _dragOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        _rigidbody2D.isKinematic = true;
     }
 
     private void OnMouseDrag()
     {
         Vector2 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + (Vector3)_dragOffset;
+
+        // Calculate velocity based on the difference in position between the current and previous frames
+        _velocity = (newPosition - _previousPosition) / Time.deltaTime;
 
         // Clamp the position within the bounds of the outer object
         Vector3 clampedPosition = _boundsCollider.bounds.ClosestPoint(newPosition);
@@ -38,17 +44,21 @@ public class DragAndDrop : MonoBehaviour
 
         // Set the connected anchor of the hinge joint to the current position of the object
         _hingeJoint.connectedAnchor = transform.position;
+
+        // Update previous position for next frame's velocity calculation
+        _previousPosition = newPosition;
     }
 
     private void OnMouseUp()
     {
-        _rigidbody2D.isKinematic = false;
         _hingeJoint.enabled = true;
+
+        // Apply final velocity to the object's rigidbody
+        _rigidbody2D.velocity = _velocity * _velocityMult;
     }
 
     public void Release()
     {
-        _rigidbody2D.isKinematic = false;
         _hingeJoint.enabled = false;
         transform.position = _initialPosition;
     }

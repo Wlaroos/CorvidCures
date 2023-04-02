@@ -7,14 +7,17 @@ public class DragAndDrop : MonoBehaviour
 {
     private Vector2 _initialPosition;
     private Vector2 _dragOffset;
+
     private Rigidbody2D _rigidbody2D;
     private HingeJoint2D _hingeJoint;
+
     private BoxCollider2D _boundsCollider;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _hingeJoint = GetComponent<HingeJoint2D>();
+
         _boundsCollider = GetComponentInParent<BoxCollider2D>(); // Assumes the bounds are on the parent object
     }
 

@@ -25,7 +25,6 @@ public class DragAndDrop : MonoBehaviour
 
     private Rigidbody2D _rb;
     private HingeJoint2D _hj;
-    private SpriteRenderer _sr;
     private GameObject _child;
 
     private BoxCollider2D _boundsCollider;
@@ -38,7 +37,6 @@ public class DragAndDrop : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _hj = GetComponent<HingeJoint2D>();
-        _sr = GetComponent<SpriteRenderer>();
 
         _boundsCollider = GetComponentInParent<BoxCollider2D>(); // Assumes the bounds are on the parent object
 

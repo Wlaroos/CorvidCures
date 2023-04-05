@@ -35,7 +35,7 @@ public class ClickedObjectsManager : MonoBehaviour
                 // Update the order layer of the clicked objects based on their recency in the list
                 for (int i = 0; i < clickedObjects.Count; i++)
                 {
-                    clickedObjects[i].GetComponent<SpriteRenderer>().sortingOrder = (i * 2) + 2;
+                    clickedObjects[i].GetComponent<SpriteRenderer>().sortingOrder = (i * 2) - 498;
                     clickedObjects[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = clickedObjects[i].GetComponent<SpriteRenderer>().sortingOrder - 1;
                 }
             }

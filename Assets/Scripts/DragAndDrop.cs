@@ -38,10 +38,16 @@ public class DragAndDrop : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _hj = GetComponent<HingeJoint2D>();
 
-        _boundsCollider = GetComponentInParent<BoxCollider2D>(); // Assumes the bounds are on the parent object
+        if (transform.parent != null)
+        {
+            _boundsCollider = GetComponentInParent<BoxCollider2D>(); // Assumes the bounds are on the parent object
+        }
 
-        _child = transform.GetChild(0).gameObject;
-        _child.SetActive(false);
+        if (transform.childCount != 0)
+        { 
+            _child = transform.GetChild(0).gameObject;
+            _child.SetActive(false);
+        }
     }
 
     private void OnMouseDown()
@@ -129,7 +135,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!_isDragging)
+        if (!_isDragging && transform.childCount != 0)
         {
             _child.SetActive(true);
         }
@@ -137,7 +143,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!_isDragging)
+        if (!_isDragging && transform.childCount != 0)
         {
             _child.SetActive(false);
         }
@@ -161,7 +167,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void DelayMouseExit()
     {
-        if (!_isDragging)
+        if (!_isDragging && transform.childCount != 0)
         {
             _child.SetActive(false);
         }

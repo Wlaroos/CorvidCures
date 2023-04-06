@@ -12,10 +12,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c757de7ff4f6314448c31f1a3a470df3, type: 3}
   m_Name: QuestData_Side
   m_EditorClassIdentifier: 
-  _characterSprite: []
-  _characterName: []
-  _job: []
-  _type: []
-  _requestText: []
-  _finalText: []
-  _rewardText: []
+  _characterSprite:
+  - {fileID: 21300000, guid: 1bf28987381e99a48b176229fa560361, type: 3}
+  - {fileID: 21300000, guid: 1da016e7a72a70f4ebf8ba2cd43075a8, type: 3}
+  - {fileID: 21300000, guid: 7296bed87c49e8741aecc5aa4965d97a, type: 3}
+  - {fileID: 21300000, guid: 5cac44c6100512646bd2162fdad4c8a3, type: 3}
+  _characterName:
+  - Lyra Ashdown
+  - Emily Reynolds
+  - Sarah Thompson
+  - Lauren Davis
+  - Rachel Mitchell
+  - Abigail Williams
+  - Eira Frost
+  - Tess Wilder
+  - Tomp Gantz
+  _job:
+  - Craft Potion
+  - Enchant Potion
+  - Enhance Potion
+  _type:
+  - Potion of Organ Failure
+  - Potion of Frost
+  - Potion of Teleportation
+  - Potion of Mind Reading
+  - Potion of Dream Walking
+  - Potion of Memory Erasure
+  - Potion of Healing
+  - Potion of Shapeshifting
+  - Potion of Levitation
+  - Potion of Invisibility
+  - Potion of Poison
+  - Potion of Fire
+  - Potion of Regeneration
+  - Potion of Nuclear Fallout
+  _requestText:
+  - Test 01
+  - Test 02
+  - Test 03
+  - Test 04
+  _finalText:
+  - Test 01
+  _rewardText:
+  - '- EXP x 10'
+  - '- Gold x 1'
+  - '- Gold x 2'
+  - '- Gold x 5'
+  - '- Gold x 10'
+  - '- Gold x 20'
+  - '- Wormwood x 7'
+  - '- Nightshade x 2'
+  - '- Test01'
+  - '- Test02'
+  - '- Test03'

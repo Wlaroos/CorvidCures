@@ -39,7 +39,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.733, y: 1.1043}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1.84, y: 2.16}
   m_Pivot: {x: 0.5131665, y: 0.88133883}
 --- !u!212 &5230240581556887103
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _velocityMult: 0.15
+  _formRef: {fileID: 0}
 --- !u!60 &5230240581556887101
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -178,7 +179,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -4.383072, y: 1.0226551}
+  m_ConnectedAnchor: {x: 0, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0

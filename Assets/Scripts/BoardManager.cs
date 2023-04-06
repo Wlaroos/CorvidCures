@@ -11,17 +11,28 @@ public class BoardManager : MonoBehaviour
     [SerializeField] QuestData_Side _sideQuestData;
     [SerializeField] QuestData _questData;
 
+    private BoxCollider2D _bc;
+
+    private GameObject _currentPage;
+
     private void Awake()
     {
-        //SpawnPageRandom();
+        _bc = GetComponent<BoxCollider2D>();
     }
 
     public void SpawnPageRandom()
     {
+
+        Vector2 spawnPoint = new Vector2(Random.Range(_bc.bounds.min.x, _bc.bounds.max.x),Random.Range(_bc.bounds.min.y, _bc.bounds.max.y));
+
         GameObject page = Instantiate(_pagePrefab[Random.Range(0, _pagePrefab.Length)], this.transform);
         GameObject form = Instantiate(_formPrefab, this.transform);
 
-        page.GetComponent<DragAndDrop>()._formRef = form;
+        page.transform.position = spawnPoint;
+        form.transform.position = spawnPoint;
+
+        page.GetComponent<DragAndDrop>().SetFormRef(form);
+        form.GetComponent<QuestForm>().SetPageRef(page);
 
         form.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _sideQuestData.CharacterName[Random.Range(0, _sideQuestData.CharacterName.Length)];
         form.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _sideQuestData.Job[Random.Range(0, _sideQuestData.Job.Length)];
@@ -41,7 +52,7 @@ public class BoardManager : MonoBehaviour
         GameObject page = Instantiate(_pagePrefab[Random.Range(0, _pagePrefab.Length)], this.transform);
         GameObject form = Instantiate(_formPrefab, this.transform);
 
-        page.GetComponent<DragAndDrop>()._formRef = form;
+        page.GetComponent<DragAndDrop>().SetFormRef(form);
 
         form.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _questData.CharacterName;
         form.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _questData.Job;
@@ -54,5 +65,17 @@ public class BoardManager : MonoBehaviour
         form.transform.GetChild(5).GetComponent<Image>().sprite = _questData.CharacterSprite;
 
         form.SetActive(false);
+    }
+
+    public void PageCheck(GameObject pageRef)
+    {
+        if (_currentPage != pageRef)
+        {
+            if(_currentPage != null)
+            {
+                _currentPage.GetComponent<DragAndDrop>().ExitButton();
+            }
+            _currentPage = pageRef;
+        }
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   _isMainQuest: 1
   _mainQuestIndex: 7
   _characterSprite: {fileID: 21300000, guid: 1bf28987381e99a48b176229fa560361, type: 3}
-  _characterName: Mikey Bess
+  _characterName: Tomp Tomp
   _job: Enchant Stone
   _type: Flame Enchantment
   _requestText: I want to commit arson

@@ -33,7 +33,8 @@ public class DragAndDrop : MonoBehaviour
     private Vector2 _velocity;
     [SerializeField] private float _velocityMult = 0.1f;
 
-    public GameObject _formRef;
+    private bool _isClicked;
+    private GameObject _formRef;
 
     private void Awake()
     {
@@ -78,6 +79,11 @@ public class DragAndDrop : MonoBehaviour
         Debug.Log("Single");
         _waitingForSecondClick = false;
         // Do single click actions here
+        _isClicked = true;
+
+        transform.parent.GetComponent<BoardManager>().PageCheck(this.gameObject);
+        _child.SetActive(true);
+        _child.GetComponent<SpriteRenderer>().color = Color.red;
         _formRef.SetActive(true);
         _formRef.transform.position = transform.position;
     }
@@ -141,7 +147,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!_isDragging && transform.childCount != 0)
+        if (!_isDragging && transform.childCount != 0 && _isClicked == false)
         {
             _child.SetActive(true);
         }
@@ -151,9 +157,12 @@ public class DragAndDrop : MonoBehaviour
     {
         if (!_isDragging && transform.childCount != 0)
         {
-            _child.SetActive(false);
+            if (_isClicked == false)
+            {
+                _child.SetActive(false);
+            }
         }
-        else
+        else if (_isDragging && transform.childCount != 0 && _isClicked == false)
         {
             Invoke(nameof(DelayMouseExit), .1f);
         }
@@ -177,5 +186,18 @@ public class DragAndDrop : MonoBehaviour
         {
             _child.SetActive(false);
         }
+    }
+
+    public void SetFormRef(GameObject formref)
+    {
+        _formRef = formref;
+    }
+
+    public void ExitButton()
+    {
+        _isClicked = false;
+        _child.GetComponent<SpriteRenderer>().color = Color.white;
+        _child.SetActive(false);
+        _formRef.SetActive(false);
     }
 }

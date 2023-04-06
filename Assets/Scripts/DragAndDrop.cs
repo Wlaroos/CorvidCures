@@ -78,19 +78,32 @@ public class DragAndDrop : MonoBehaviour
     {
         Debug.Log("Single");
         _waitingForSecondClick = false;
+
         // Do single click actions here
         _isClicked = true;
 
         transform.parent.GetComponent<BoardManager>().PageCheck(this.gameObject);
+
         _child.SetActive(true);
         _child.GetComponent<SpriteRenderer>().color = Color.red;
+
         _formRef.SetActive(true);
-        _formRef.transform.position = transform.position;
+
+        
+        if (transform.position.x <= 0)
+        {
+            _formRef.transform.position = new Vector2(transform.position.x + 3.5f, transform.position.y);
+        }
+        else
+        {
+            _formRef.transform.position = new Vector2(transform.position.x - 3.5f, transform.position.y);
+        }
     }
 
     private void DoubleClick()
     {
         Debug.Log("Double");
+
         // Do double click actions here
         Destroy(_formRef.gameObject);
         Destroy(this.gameObject);

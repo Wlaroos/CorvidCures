@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e128d4ff8554aa64da6d018f0d45831b, type: 3}
   m_Name: QuestDataSO
   m_EditorClassIdentifier: 
-  _isMainQuest: 0
-  _mainQuestIndex: 0
-  _characterSprite: {fileID: 0}
-  _characterName: 
-  _job: 
-  _type: 
-  _requestText: 
-  _finalText: 
+  _isMainQuest: 1
+  _mainQuestIndex: 7
+  _characterSprite: {fileID: 21300000, guid: 1bf28987381e99a48b176229fa560361, type: 3}
+  _characterName: Mikey Bess
+  _job: Enchant Stone
+  _type: Flame Enchantment
+  _requestText: I want to commit arson
+  _finalText: Thanks, I did it
   _rewardText:
-  - 
-  - 
-  - 
-  - 
+  - '- Nothing x 10'
+  - '- Gold x 1'
+  - '- Gold x 1'
+  - '- Gold x 1'

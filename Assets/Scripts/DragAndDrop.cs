@@ -33,6 +33,8 @@ public class DragAndDrop : MonoBehaviour
     private Vector2 _velocity;
     [SerializeField] private float _velocityMult = 0.1f;
 
+    public GameObject _formRef;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -76,12 +78,16 @@ public class DragAndDrop : MonoBehaviour
         Debug.Log("Single");
         _waitingForSecondClick = false;
         // Do single click actions here
+        _formRef.SetActive(true);
+        _formRef.transform.position = transform.position;
     }
 
     private void DoubleClick()
     {
         Debug.Log("Double");
         // Do double click actions here
+        Destroy(_formRef.gameObject);
+        Destroy(this.gameObject);
     }
 
     private void OnMouseDrag()

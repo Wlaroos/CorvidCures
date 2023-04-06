@@ -32,7 +32,7 @@ public class QuestData : ScriptableObject
     public string Type { get => _type; }
     public string RequestText { get => _requestText; }
     public string FinalText { get => _finalText; }
-    public string[] RinalText { get => _rewardText; }
+    public string[] RewardText { get => _rewardText; }
 
 #if UNITY_EDITOR
     [ContextMenu("Rename to name")]

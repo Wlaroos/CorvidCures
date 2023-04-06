@@ -11,6 +11,15 @@ public class ClickedObjectsManager : MonoBehaviour
         // LMB
         if (Input.GetMouseButtonDown(0))
         {
+
+            for (int i = 0; i < clickedObjects.Count; i++)
+            {
+                if(clickedObjects[i] == null)
+                {
+                    clickedObjects.RemoveAt(i);
+                }    
+            }
+
             // Get the mouse position in world space
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // Get the collider of the object at the mouse position
